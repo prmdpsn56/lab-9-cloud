@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Full stack example with SQL database backend</title>
+
+        <script>
+
+         function getAddress(e) {
+             console.log(e.target.innerHTML);
+             let streetName = encodeURI(e.target.innerHTML);
+
+             fetch(`streets/${streetName}`)
+                 .then( response => {                     
+                     return response.json();                     
+                 })
+                 .then( json => {
+                     console.log(json);
+                     let map = document.querySelector('#map');
+                     map.innerHTML = '';                     
+                     json.forEach( address => {
+                         let elem = document.createElement('div');
+                         elem.innerHTML = `${address.Number} ${address.Name}`;
+                         map.appendChild(elem);
+                     });
+
+                 });
+         }
+         
+         // no code should execute before loading of page
+         window.addEventListener('load', () => {         
+             // here we get the list of streets in vancouver
+             // that has bike racks available.
+
+             // we are going to use the fetch api (modern browsers only)
+
+             fetch('streets')
+                 .then(function(response) {
+                     return response.json();
+                 })
+                 .then(function(json) {
+                     // modify DOM element
+                     let container = document.querySelector('#streets');
+
+                     json.forEach( street => {
+                         let elem = document.createElement('div');
+                         elem.innerHTML = street.Name;
+                         elem.addEventListener('click', getAddress);
+                         container.appendChild(elem);                         
+                     });
+                 }); 
+         });
+
+         
+         
+        </script>
+
+        <style>
+         #streets {
+             float: left;
+         }
+         
+         #map {
+             float: right;
+         }
+        </style>
+    </head>
+
+    <body>
+        <section id='streets'></section>
+        <section id='map'></section>
+    </body>
+
+</html>

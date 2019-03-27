@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Full stack example with SQL database backend</title>
+
+        <script>
+
+         // no code should execute before loading of page
+         window.addEventListener('load', () => {
+         
+             // here we get the list of streets in vancouver
+             // that has bike racks available.
+
+             // we are going to use the fetch api (modern browsers only)
+
+             fetch('/streets')
+                 .then(function(response) {
+                     return response.json();
+                 })
+                 .then(function(json) {
+                     // modify DOM element
+                     let container = document.querySelector('#streets');
+
+                     json.forEach( street => {
+                         let elem = document.createElement('div');
+                         elem.innerHTML = street.Name;
+                         container.appendChild(elem);
+                     });
+                 }); 
+         });
+
+         
+         
+        </script>
+        
+    </head>
+
+    <body>
+        <section id='streets'>
+    </body>
+
+</html>
